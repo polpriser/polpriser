@@ -6,11 +6,6 @@ using Newtonsoft.Json.Linq;
 
 public static class GetVinmonopoletProductsDataCommand
 {
-    public static void Erlend()
-    {
-        var aromatisert_vin = 0;
-        var bare = $"{aromatisert_vin}";
-    }
     public static void ExecuteAsync()
     {
         if (Config.jsonProductsDirectory == null)
@@ -72,6 +67,7 @@ public static class GetVinmonopoletProductsDataCommand
             var id = long.Parse(productCode.ToString());
 
             var productName = product["name"].ToString();
+            var alcohol = product["alcohol"]["value"].ToString();
             var volume = product["volume"]["formattedValue"].ToString();
             var price = ((int)(decimal.Parse(product["price"]["value"].ToString()) * 100)).ToString();
 
@@ -81,6 +77,7 @@ public static class GetVinmonopoletProductsDataCommand
                 type = type,
                 name = productName,
                 volume = volume,
+                alcohol = alcohol,
                 price = price
             });
         }
@@ -97,8 +94,8 @@ public static class GetVinmonopoletProductsDataCommand
             foreach (var product in products)
             {
                 string insertQuery = @"
-                    INSERT OR REPLACE INTO vino (id, type, name, volume, price)
-                    VALUES (@id, @type, @name, @volume, @price)";
+                    INSERT OR REPLACE INTO vino (id, type, name, volume, alcohol, price)
+                    VALUES (@id, @type, @name, @volume, @alcohol, @price)";
 
                 using (var command = new SQLiteCommand(insertQuery, connection))
                 {
@@ -106,6 +103,7 @@ public static class GetVinmonopoletProductsDataCommand
                     command.Parameters.AddWithValue("@type", product.type);
                     command.Parameters.AddWithValue("@name", product.name);
                     command.Parameters.AddWithValue("@volume", product.volume);
+                    command.Parameters.AddWithValue("@alcohol", product.alcohol);
                     command.Parameters.AddWithValue("@price", product.price);
                     command.ExecuteNonQuery();
                 }
@@ -120,5 +118,6 @@ public class VinoProduct
     public int type { get; set; }
     public string name { get; set; }
     public string volume { get; set; }
+    public string alcohol { get; set; }
     public string price { get; set; }
 }

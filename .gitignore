@@ -1,0 +1,70 @@
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.pdb
+*.pdb.lock
+
+# Packages #
+############
+# It's not recommended to have the packages directory committed into source control
+# since it can be restored using the project file and NuGet restore.
+# Uncomment the line below if you want to ignore the packages directory.
+# /packages/
+
+# User-specific files #
+#######################
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# User-specific files (MonoDevelop/Xamarin Studio) #
+####################################################
+*.userprefs
+
+# Build results #
+#################
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio Code #
+#####################
+.vscode/
+# Add .vscode/ to the .gitignore if you're using Visual Studio Code for development
+
+# Rider #
+########
+.idea/
+*.sln.iml
+
+# ReSharper #
+#############
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# Test Results #
+###############
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+/priser/*
+vino.db
+vino.txt

@@ -15,6 +15,7 @@ public class DatabaseInitializer
                     type TINYINT, 
                     name VARCHAR(60), 
                     volume VARCHAR(10), 
+                    alcohol DECIMAL(4, 2),
                     price INT
                 )";
 

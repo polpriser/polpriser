@@ -13,7 +13,10 @@ namespace com.erlendthune.polpriser
             {
                 Console.WriteLine("Usage: dotnet run [command]");
                 Console.WriteLine("Available commands:");
+                Console.WriteLine("- create-database");
                 Console.WriteLine("- get-products-json-files");
+                Console.WriteLine("- create-version-file");
+                Console.WriteLine("- extract-product-data");
                 return;
             }
 
