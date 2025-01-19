@@ -29,15 +29,18 @@ class GetVinmonopoletProductsCommand
 
             if (pageInfo != null)
             {
-                Console.WriteLine("Current Page: " + pageInfo["currentPage"]);
-                Console.WriteLine("Total Pages: " + pageInfo["totalPages"]);
-                Console.WriteLine("Total Results: " + pageInfo["totalResults"]);
+                JToken? productsToken = parsedJson["productSearchResult"]?["products"];
+                if (productsToken is JArray products)
+                {
+                    noOfProducts = products.Count;
+                    Console.WriteLine($"\rCurrent Page: {pageInfo["currentPage"]}, No of products: {noOfProducts}");
 
-                JArray products = (JArray)parsedJson["productSearchResult"]["products"];
-                noOfProducts = products.Count;
-                Console.WriteLine("No of products: " + noOfProducts);
-
-                SaveToFile(productCategory, responseBody, currentPage);
+                    SaveToFile(productCategory, responseBody, currentPage);
+                }
+                else
+                {
+                    Console.WriteLine("Products data is missing or invalid.");
+                }
             }
             else
             {

@@ -53,8 +53,8 @@ jobs:
     - name: Prepare files for deployment
       run: |
         mkdir -p publish
-        cp vino13.db publish/
-        cp vino13.txt publish/
+        cp vino.db publish/vino13.db
+        cp vino.txt publish/vino13.txt
 
     # Step 7: Deploy to GitHub Pages
     - name: Deploy

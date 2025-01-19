@@ -4,7 +4,7 @@ using System.IO;
 
 public class CreateVersionFileCommand
 {
-    private static StreamWriter file;
+    private static StreamWriter? file;
 
     public static void OpenFile(string filename)
     {
@@ -13,12 +13,15 @@ public class CreateVersionFileCommand
 
     public static void CloseFile()
     {
-        file.Close();
+        file?.Close();
     }
 
-    public static void MyPuts(string s)
+    public static void MyPuts(string? s)
     {
-        file.Write(s);
+        if(s is null)
+            return;
+            
+        file?.Write(s);
     }
 
     public static void ExecuteAsync()

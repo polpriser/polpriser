@@ -43,14 +43,22 @@ public static class GetVinmonopoletProductsDataCommand
                 {
                     break;
                 }
-                Console.WriteLine(jsonFilePath);
-
+                Console.Write($"\r{new string(' ', 50)}"); // Clear line
+                Console.Write($"\r{jsonFilePath}"); // Print the variable
                 // Read and parse the JSON file
                 string jsonData = File.ReadAllText(jsonFilePath);
                 JObject jsonObject = JObject.Parse(jsonData);
-                JArray products = (JArray)jsonObject["productSearchResult"]["products"];
-
-                int noOfProducts = ExtractProducts(category.Value, products);
+                
+                JToken? productsToken = jsonObject["productSearchResult"]?["products"];
+                if (productsToken is JArray products)
+                {
+                    ExtractProducts(category.Value, products);
+                }
+                else
+                {
+                    // Handle the case where products is null or not a JArray
+                    Console.WriteLine("Products data is missing or invalid.");
+                }
 
                 fileNo++;
             }
@@ -64,20 +72,32 @@ public static class GetVinmonopoletProductsDataCommand
         foreach (var product in products)
         {
             var productCode = product["code"];
+            if (productCode == null) continue;
+
             var id = long.Parse(productCode.ToString());
 
-            var productName = product["name"].ToString();
-            var alcohol = product["alcohol"]["value"].ToString();
-            var volume = product["volume"]["formattedValue"].ToString();
-            var price = ((int)(decimal.Parse(product["price"]["value"].ToString()) * 100)).ToString();
-
+            var productName = product["name"]?.ToString();
+            if (productName == null)
+            {
+                Console.WriteLine($"Product name is missing for product with id: {id}");
+                continue;
+            }
+            if(product["alcohol"] == null || product["volume"] == null || product["price"] == null)
+            {
+                Console.WriteLine($"Product with id: {id} is missing alcohol, volume or price data.");
+            }
+            var alcohol = product["alcohol"]?["value"]?.ToString();
+            var volume = product["volume"]?["formattedValue"]?.ToString();
+            var priceToken = product["price"]?["value"];
+            var price = priceToken != null ? ((int)(decimal.Parse(priceToken.ToString()) * 100)).ToString() : "0";
+    
             productList.Add(new VinoProduct
             {
                 id = id,
                 type = type,
                 name = productName,
-                volume = volume,
-                alcohol = alcohol,
+                volume = volume ?? "0",
+                alcohol = alcohol ?? "0",
                 price = price
             });
         }
@@ -116,8 +136,8 @@ public class VinoProduct
 {
     public long id { get; set; }
     public int type { get; set; }
-    public string name { get; set; }
-    public string volume { get; set; }
-    public string alcohol { get; set; }
-    public string price { get; set; }
+    public string name { get; set; } = "";
+    public string volume { get; set; } = "";
+    public string alcohol { get; set; } = "";
+    public string price { get; set; } = "";
 }
