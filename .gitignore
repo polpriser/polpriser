@@ -66,5 +66,5 @@ _ReSharper*/
 [Bb]uild[Ll]og.*
 
 /priser/*
-vino.db
-vino.txt
+*.db
+*.txt

@@ -35,6 +35,7 @@ class GetVinmonopoletProductsCommand
 
                 JArray products = (JArray)parsedJson["productSearchResult"]["products"];
                 noOfProducts = products.Count;
+                Console.WriteLine("No of products: " + noOfProducts);
 
                 SaveToFile(productCategory, responseBody, currentPage);
             }
