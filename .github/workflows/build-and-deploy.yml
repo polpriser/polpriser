@@ -2,7 +2,7 @@ name: Build and Deploy
 
 on:
   schedule:
-    - cron: '05 20 * * 1'  # Runs every Monday at 22:05 UTC
+    - cron: '05 20 1 * *'  # Runs at 20:05 UTC on the 1st day of every month
 
 jobs:
   build-and-deploy:
