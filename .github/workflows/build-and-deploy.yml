@@ -1,0 +1,64 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '05 20 * * 1'  # Runs every Monday at 22:05 UTC
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout the code
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # Step 2: Setup .NET
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.x'  # specify your .NET version
+
+    - name: Print current directory before restoring dependencies
+      run: pwd
+
+    # Step 3: Restore .NET dependencies
+    - name: Restore dependencies
+      run: dotnet restore garmin/garmin.csproj
+
+    # Step 4: Build the application
+    - name: Build the application
+      run: dotnet build --configuration Release
+
+    # Step 5: Run your commands sequentially
+    - name: Run get-products-json-files
+      run: bin/Release/net8.0/polpriser get-products-json-files 
+
+    - name: Run create-database
+      run: bin/Release/net8.0/polpriser create-database
+
+    - name: Run extract-product-data
+      run: bin/Release/net8.0/garmin extract-product-data
+
+    - name: Run create-version-file
+      run: bin/Release/net8.0/garmin create-version-file
+
+    # Step 6: Prepare files for deployment
+    - name: Prepare files for deployment
+      run: |
+        mkdir -p publish
+        cp vino13.db publish/
+        cp vino13.txt publish/
+
+    # Step 7: Deploy to GitHub Pages
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        personal_token: ${{ secrets.PERSONAL_TOKEN }}
+        external_repository: polpriser/polpriser.github.io  # The GitHub Pages repository    
+        publish_branch: main  # Push to the main branch of polpriser.github.io
+        publish_dir: publish
+        
