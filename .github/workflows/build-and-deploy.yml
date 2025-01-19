@@ -27,7 +27,7 @@ jobs:
 
     # Step 3: Restore .NET dependencies
     - name: Restore dependencies
-      run: dotnet restore garmin/garmin.csproj
+      run: dotnet restore polpriser.csproj
 
     # Step 4: Build the application
     - name: Build the application
@@ -41,10 +41,10 @@ jobs:
       run: bin/Release/net8.0/polpriser create-database
 
     - name: Run extract-product-data
-      run: bin/Release/net8.0/garmin extract-product-data
+      run: bin/Release/net8.0/polpriser extract-product-data
 
     - name: Run create-version-file
-      run: bin/Release/net8.0/garmin create-version-file
+      run: bin/Release/net8.0/polpriser create-version-file
 
     # Step 6: Prepare files for deployment
     - name: Prepare files for deployment
