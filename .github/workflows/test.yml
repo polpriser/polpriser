@@ -1,0 +1,24 @@
+# Step 6: Prepare files for deployment
+- name: Prepare files for deployment
+  run: |
+    mkdir -p publish
+    # Create a simple index.html file
+    echo "<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Deployment</title>
+</head>
+<body>
+    <h1>Deployment Successful!</h1>
+    <p>If you can see this page, the deployment to GitHub Pages works correctly.</p>
+</body>
+</html>" > publish/index.html
+
+# Step 7: Deploy to GitHub Pages
+- name: Deploy
+  uses: peaceiris/actions-gh-pages@v4
+  with:
+    personal_token: ${{ secrets.PERSONAL_TOKEN }}
+    external_repository: polpriser/polpriser.github.io  # The GitHub Pages repository    
+    publish_branch: main  # Push to the main branch of polpriser.github.io
+    publish_dir: publish
