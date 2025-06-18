@@ -18,7 +18,10 @@ public static class Config
         { "sake", 12 },
         { "mj%C3%B8d", 13 }
     };
-    public static string baseUrl = "https://www.vinmonopolet.no/vmpws/v2/vmp/search?fields=FULL&pageSize=24&searchType=product&currentPage={0}&q=%3Arelevance%3AmainCategory%3A{1}";
+    // public static string baseUrl = "https://www.vinmonopolet.no/vmpws/v2/vmp/search?fields=FULL&pageSize=24&searchType=product&currentPage={0}&q=%3Arelevance%3AmainCategory%3A{1}";
+
+    //18.6.2025
+    public static string baseUrl = "https://www.vinmonopolet.no/vmpws/v2/vmp/products/search?fields=FULL&pageSize=24&currentPage={0}&q=%3Arelevance%3AmainCategory%3A{1}";
 
     public static string jsonProductsDirectory = "priser";
     public static string databaseFilePath = "vino.db";

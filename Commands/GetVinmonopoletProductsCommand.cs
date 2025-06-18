@@ -14,6 +14,7 @@ class GetVinmonopoletProductsCommand
 
     public static async Task GetProducts(string productCategory, int type)
     {
+        Console.WriteLine("Fetching product files for category: " + productCategory);
         int currentPage = 0;
         var noOfProducts = 0;
         do
@@ -25,27 +26,31 @@ class GetVinmonopoletProductsCommand
             JObject parsedJson = JObject.Parse(responseBody);
 
             // Extract the pagination object
-            var pageInfo = parsedJson["contentSearchResult"]?["pagination"];
+            var pageInfo = parsedJson["pagination"];
 
             if (pageInfo != null)
             {
-                JToken? productsToken = parsedJson["productSearchResult"]?["products"];
+                JToken? productsToken = parsedJson["products"];
                 if (productsToken is JArray products)
                 {
                     noOfProducts = products.Count;
-                    Console.WriteLine($"\rCurrent Page: {pageInfo["currentPage"]}, No of products: {noOfProducts}");
+                    var currentPageToken = pageInfo.Value<int>("currentPage");
+                    var currentPageNumber = currentPageToken;
+
+                    Console.WriteLine($"\rCurrent Page: {currentPageNumber}, No of products: {noOfProducts}");
 
                     SaveToFile(productCategory, responseBody, currentPage);
                 }
                 else
                 {
                     Console.WriteLine("Products data is missing or invalid.");
+                    throw new InvalidOperationException("Products data is missing or invalid.");
                 }
             }
             else
             {
                 Console.WriteLine("Pagination info not found.");
-                return;
+                throw new InvalidOperationException("Pagination info not found.");
             }
             currentPage++;
         } while (noOfProducts > 0);

@@ -36,16 +36,24 @@ jobs:
 
     # Step 5: Run your commands sequentially
     - name: Run get-products-json-files
-      run: bin/Release/net8.0/polpriser get-products-json-files 
+      run: |
+        set -e
+        bin/Release/net8.0/polpriser get-products-json-files
 
     - name: Run create-database
-      run: bin/Release/net8.0/polpriser create-database
+      run: |
+        set -e
+        bin/Release/net8.0/polpriser create-database
 
     - name: Run extract-product-data
-      run: bin/Release/net8.0/polpriser extract-product-data
+      run: |
+        set -e
+        bin/Release/net8.0/polpriser extract-product-data
 
     - name: Run create-version-file
-      run: bin/Release/net8.0/polpriser create-version-file
+      run: |
+        set -e
+        run: bin/Release/net8.0/polpriser create-version-file
 
     # Step 6: Prepare files for deployment
     - name: Prepare files for deployment

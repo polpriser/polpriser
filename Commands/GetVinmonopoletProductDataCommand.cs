@@ -49,7 +49,7 @@ public static class GetVinmonopoletProductsDataCommand
                 string jsonData = File.ReadAllText(jsonFilePath);
                 JObject jsonObject = JObject.Parse(jsonData);
                 
-                JToken? productsToken = jsonObject["productSearchResult"]?["products"];
+                JToken? productsToken = jsonObject["products"];
                 if (productsToken is JArray products)
                 {
                     ExtractProducts(category.Value, products);
@@ -58,6 +58,7 @@ public static class GetVinmonopoletProductsDataCommand
                 {
                     // Handle the case where products is null or not a JArray
                     Console.WriteLine("Products data is missing or invalid.");
+                    throw new InvalidOperationException("Products data is missing or invalid.");
                 }
 
                 fileNo++;
@@ -82,7 +83,7 @@ public static class GetVinmonopoletProductsDataCommand
                 Console.WriteLine($"Product name is missing for product with id: {id}");
                 continue;
             }
-            if(product["alcohol"] == null || product["volume"] == null || product["price"] == null)
+            if (product["alcohol"] == null || product["volume"] == null || product["price"] == null)
             {
                 Console.WriteLine($"Product with id: {id} is missing alcohol, volume or price data.");
             }
@@ -90,7 +91,7 @@ public static class GetVinmonopoletProductsDataCommand
             var volume = product["volume"]?["formattedValue"]?.ToString();
             var priceToken = product["price"]?["value"];
             var price = priceToken != null ? ((int)(decimal.Parse(priceToken.ToString()) * 100)).ToString() : "0";
-    
+
             productList.Add(new VinoProduct
             {
                 id = id,
