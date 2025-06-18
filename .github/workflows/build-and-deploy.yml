@@ -53,7 +53,7 @@ jobs:
     - name: Run create-version-file
       run: |
         set -e
-        run: bin/Release/net8.0/polpriser create-version-file
+        bin/Release/net8.0/polpriser create-version-file
 
     # Step 6: Prepare files for deployment
     - name: Prepare files for deployment
